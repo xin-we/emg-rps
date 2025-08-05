@@ -8,6 +8,6 @@ This repository contains code for recognizing **posed** and **spontaneous** self
 - `data/` (place dataset downloaded from [OSF](https://osf.io/fmrea))
 
 ## Getting Started
-1. Clone the repo:**
+1. Clone this repo.
 2. Download dataset from OSF and place it in the data/ folder.
 3. Run preprocessing and training scripts.
