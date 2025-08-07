@@ -115,7 +115,7 @@ def main():
             if EID == 2 and pid == 1:   # Skip invalid data due to device problem
                 continue
             df = extract_features(data, EID, pid, fs, f_notch, width, flow, fhigh, window_size, step_size, invalid_trials)
-            df.to_csv(output_dir / f"E{EID}_P{pid}.csv", index=False)
+            df.to_parquet(output_dir / f"E{EID}_P{pid}.parquet", index=False)
 
 
 if __name__ == "__main__":

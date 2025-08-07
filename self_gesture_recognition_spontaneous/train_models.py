@@ -30,14 +30,14 @@ def main():
 
     for EID in range(1, 2):
         for pid in [1, 2]:
-            train_path = feature_dir / f"E{EID}_P{pid}_stage1.csv"
-            test_path = feature_dir / f"E{EID}_P{pid}_stage2.csv"
+            train_path = feature_dir / f"E{EID}_P{pid}_stage1.parquet"
+            test_path = feature_dir / f"E{EID}_P{pid}_stage2.parquet"
             if not train_path.exists() or not test_path.exists():
                     continue
 
             feature_cols = ["rms_ch1", "rms_ch2", "class"]
-            train_df = pd.read_csv(train_path)
-            test_df = pd.read_csv(test_path)
+            train_df = pd.read_parquet(train_path)
+            test_df = pd.read_parquet(test_path)
 
             print(f"E{EID}, P{pid} model training and test...")
             train_and_evaluate(

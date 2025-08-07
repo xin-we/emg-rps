@@ -163,8 +163,8 @@ def main():
                 train_df, test_df = generate_per_trial_features(
                     data, emg_signals, EID, pid, trial, invalid_trials, window_size, step_size
                 )
-                train_df.to_csv(output_dir / f"E{EID}_P{pid}_train_{trial}.csv", index=False)
-                test_df.to_csv(output_dir / f"E{EID}_P{pid}_test_{trial}.csv", index=False)
+                train_df.to_parquet(output_dir / f"E{EID}_P{pid}_train_{trial}.parquet", index=False)
+                test_df.to_parquet(output_dir / f"E{EID}_P{pid}_test_{trial}.parquet", index=False)
 
 
 if __name__ == "__main__":

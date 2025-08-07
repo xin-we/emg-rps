@@ -170,13 +170,13 @@ def main():
             train_df["class"] = train_classes
             train_df["annotation"] = train_annos
             train_df.columns = column_names
-            train_df.to_csv(feature_dir / f"E{EID}_P{pid}_stage1.csv", index=False)
+            train_df.to_parquet(feature_dir / f"E{EID}_P{pid}_stage1.parquet", index=False)
 
             test_df = pd.concat([test_features[0], test_features[1]], axis=1)
             test_df["class"] = test_classes
             test_df["annotation"] = test_annos
             test_df.columns = column_names
-            test_df.to_csv(feature_dir / f"E{EID}_P{pid}_stage2.csv", index=False)
+            test_df.to_parquet(feature_dir / f"E{EID}_P{pid}_stage2.parquet", index=False)
 
 
 if __name__ == "__main__":
