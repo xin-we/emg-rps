@@ -134,6 +134,7 @@ def main():
     invalid_stage2 = [[7], [7, 17, 18]]
 
     feature_dir = Path("features")
+    feature_dir.mkdir(parents=True, exist_ok=True)
 
     for EID in range(1, 13): # EID: experimental session ID (1–12)
         data = pd.read_csv(f"../data/E{EID}_data.csv")
