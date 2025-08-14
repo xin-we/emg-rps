@@ -91,7 +91,8 @@ def generate_per_trial_features(data, emg_signals, session_id, pid, trial_id, in
             if ch == 0:
                 train_self.extend([label_self] * n_windows)
                 train_opp.extend([label_opp] * n_windows)
-                train_annos_out.extend([anno] * n_windows)
+                # train_annos_out.extend([anno] * n_windows)
+                train_annos_out.extend(data.iloc[indices[:n_windows], :].annotation.tolist())
 
         label_self = data[f"{participant}_action"].iloc[test_indices[0]]
         label_opp = data[f"{opponent}_action"].iloc[test_indices[0]]
@@ -100,7 +101,8 @@ def generate_per_trial_features(data, emg_signals, session_id, pid, trial_id, in
         if ch == 0:
             test_self.extend([label_self] * n_windows)
             test_opp.extend([label_opp] * n_windows)
-            test_annos_out.extend([anno] * n_windows)
+            # test_annos_out.extend([test_anno] * n_windows)
+            test_annos_out.extend(data.iloc[test_indices[:n_windows], :].annotation.tolist())
 
         train_features_ch.append(pd.concat(train_ch_feats, ignore_index=True))
         test_features_ch.append(pd.concat(test_ch_feats, ignore_index=True))

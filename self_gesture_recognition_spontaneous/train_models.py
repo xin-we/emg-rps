@@ -4,7 +4,7 @@ from sklearn.metrics import accuracy_score
 from pathlib import Path
 
 
-def train_and_evaluate(train_df, test_df, feature_cols, label, model_path):
+def train_and_evaluate(train_df, test_df, feature_cols, label, model_path, pred_path):
     """
     Train AutoGluon classifier and evaluate performance.
     """
@@ -17,6 +17,8 @@ def train_and_evaluate(train_df, test_df, feature_cols, label, model_path):
         if len(test_trial_df) > 0: # skip invalid trials
             y_true = test_trial_df[label]
             y_pred = predictor.predict(test_trial_df.drop(columns=[label]))
+            trial_id = anno.split('_')[1]
+            y_pred.to_frame(name='prediction').to_parquet(pred_path + f"{trial_id}.parquet")
 
             acc = accuracy_score(y_true, y_pred)
             print(f"trial {i+1}, accuracy: {acc:.3f}")
@@ -27,8 +29,10 @@ def main():
     feature_dir = Path("features")
     model_root = Path("models")
     model_root.mkdir(parents=True, exist_ok=True)
+    pred_root = Path("predictions")
+    pred_root.mkdir(parents=True, exist_ok=True)
 
-    for EID in range(1, 2):
+    for EID in range(1, 13):
         for pid in [1, 2]:
             train_path = feature_dir / f"E{EID}_P{pid}_stage1.parquet"
             test_path = feature_dir / f"E{EID}_P{pid}_stage2.parquet"
@@ -45,7 +49,7 @@ def main():
                     test_df,
                     feature_cols=feature_cols,
                     label="class",
-                    model_path=str(model_root / f"E{EID}_P{pid}")
+                    model_path=str(model_root / f"E{EID}_P{pid}"), pred_path=str(pred_root / f"E{EID}_P{pid}_")
                 )
 
 

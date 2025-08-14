@@ -28,12 +28,12 @@ def train_and_evaluate_model(df, label_col, model_root, pred_root, EID, pid):
         train = TabularDataset(train_data[["rms_ch1", "rms_ch2", label_col]])
         predictor = TabularPredictor(label=label_col, path=model_path, verbosity=0).fit(train)
 
-        for label in test_labels:
+        for i, label in enumerate(test_labels):
             test_data = df[df.annotation == label]
             test = TabularDataset(test_data[["rms_ch1", "rms_ch2", label_col]])
 
             preds = predictor.predict(test.drop(columns=[label_col]))
-            preds.to_parquet(pred_root / f"E{EID}_P{pid}_{test_trials[0]}_{test_trials[1]}_{test_trials[2]}.parquet")
+            preds.to_frame(name='prediction').to_parquet(pred_root / f"E{EID}_P{pid}_{test_trials[0]}_{test_trials[1]}_{test_trials[2]}_{test_trials[i]}.parquet")
 
             acc = accuracy_score(test[label_col], preds)
             print(f"E{EID}, P{pid}, {comb}, {label}, accuracy: {acc:.3f}")
@@ -46,7 +46,7 @@ def main():
     pred_root = Path("predictions")
     pred_root.mkdir(parents=True, exist_ok=True)
 
-    for EID in range(1, 2):
+    for EID in range(1, 13):
         for pid in [1, 2]:
             file_path = feature_dir / f"E{EID}_P{pid}.parquet"
             if not file_path.exists():
